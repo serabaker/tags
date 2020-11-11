@@ -1,4 +1,5 @@
-<h1>The Ultimate Tag Manager</h1>
+{% extends "base.html" %}
+{% block content %}
 <h1>Hello World!</h1>
 <img src="{{ g.image }}" style="width:300px">
 <div>
@@ -12,3 +13,4 @@
     <input name="tag-name">
   </form>
 </div>
+{% endblock %}
