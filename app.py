@@ -4,7 +4,7 @@ sys.path.insert(1, sys.path[0])
 from config import load_config, app_init
 from datetime import datetime
 from IPython import embed
-from flask import request, redirect
+from flask import request, redirect, render_template, g
 
 app = app_init(__name__)
 
@@ -14,11 +14,10 @@ cfg = load_config(join(app.root_path, '../shared/config.yml'))
 
 @app.route('/', methods=['GET'])
 def show_tags():
-    tags = Tag.all()
-    tags_html = '\n'.join(list(map(lambda x: x.name + "<br>", tags)))
-    form_html = "<form action=\"/tags\" method=\"POST\"><label>Enter a tag: </label><input name=\"tag-name\"></form>"
+    g.setdefault('image', cfg['awesome_image']) # Flask.g: a way to pass var to a template
     #embed()
-    return "<h1>The Ultimate Tag Manager</h1><h1>Hello World!</h1><img src=\"%s\" style=\"width:300px\"><div>%s</div><div>%s</div>" % (cfg['awesome_image'],tags_html, form_html)
+    # Note tags=Tag.all() ... another way to pass var to a Jinja2 template
+    return render_template('index.html', tags=Tag.all())
 
 @app.route('/tags', methods=['POST'])
 def add_tag():
